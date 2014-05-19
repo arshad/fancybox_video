@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Video field support for the fancyBox module.
+ */
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function fancybox_video_field_formatter_info_alter(&$info) {
+  // Add file support for fancybox.
+  $info['fancybox']['field types'][] = 'file';
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function fancybox_video_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  $element = array();
+
+  if ($display['type'] == 'fancybox') {
+    $element['foo'] = array(
+      '#title' => t('Bar'),
+      '#type' => 'textfield',
+      '#size' => 20,
+      '#default_value' => $settings['foo'],
+      '#required' => TRUE,
+    );
+  }
+
+  return $element;
+
+}
