@@ -9,7 +9,7 @@
       $(".fancybox-video").click(function() {
         $.fancybox.showLoading();
 
-        var wrap = $('<div id="fancybox-video-wrapper"></div>').appendTo('body');
+        var wrap = $('<div id="fancybox-video-wrapper" style="display:none;"></div>').appendTo('body');
         var el   = $(this).clone().appendTo(wrap);
 
         var maxWidth = $(this).data().width;
