@@ -52,7 +52,7 @@ function fancybox_video_libraries_info() {
 /**
  * Implements hook_field_formatter_info().
  */
-function fancybox_video_field_formatter_info(&$info) {
+function fancybox_video_field_formatter_info() {
   return array(
     'fancybox_video' => array(
       'label' => t('fancyBox video'),
