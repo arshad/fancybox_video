@@ -12,10 +12,13 @@
         var wrap = $('<div id="fancybox-video-wrapper"></div>').appendTo('body');
         var el   = $(this).clone().appendTo(wrap);
 
+        var maxWidth = $(this).data().width;
+        var maxHeight = $(this).data().height;
+
         el.oembed(null, {
           embedMethod : 'replace',
-          maxWidth: 640,
-          maxHeight: 450,
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
           afterEmbed  : function(rez) {
             var what = $(rez.code);
             var type = 'html';
@@ -29,16 +32,16 @@
             }
 
             // Set width and height for iframe.
-            what.attr('width', 640);
-            what.attr('height', 450);
+            what.attr('width', maxWidth);
+            what.attr('height', maxHeight);
 
             $.fancybox.open({
               href      : what,
               type      : type,
               scrolling : scrolling,
               title     : rez.title || $(this).attr('title'),
-              width     : 640,
-              height    : 450,
+              width     : maxWidth,
+              height    : maxHeight,
               autoSize  : false
             });
 

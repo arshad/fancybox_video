@@ -44,6 +44,8 @@ function theme_fancybox_video_formatter($variables) {
       'html' => TRUE,
       'attributes' => array(
         'class' => array('fancybox-video'),
+        'data-width' => $settings['fancybox_video_width'],
+        'data-height' => $settings['fancybox_video_height'],
       ),
     ),
   ));

@@ -59,7 +59,8 @@ function fancybox_video_field_formatter_info(&$info) {
       'field types' => array('file'),
       'settings' => array(
         'fancybox_video_thumbnail_image_style' => 'thumbnail',
-        'fancybox_video_view_mode' => 'default',
+        'fancybox_video_width' => '640',
+        'fancybox_video_height' => '450',
       ),
     ),
   );
@@ -74,7 +75,6 @@ function fancybox_video_field_formatter_settings_form($field, $instance, $view_m
   $element = array();
 
   $image_style_options = image_style_options(FALSE);
-  $file_view_mode_options = file_entity_view_mode_labels();
 
   $element['fancybox_video_thumbnail_image_style'] = array(
     '#title'   => t('Thumbnail image style'),
@@ -83,11 +83,18 @@ function fancybox_video_field_formatter_settings_form($field, $instance, $view_m
     '#default_value' => $settings['fancybox_video_thumbnail_image_style'],
   );
 
-  $element['fancybox_video_view_mode'] = array(
-    '#title'   => t('View mode'),
-    '#type'    => 'select',
-    '#options' => $file_view_mode_options,
-    '#default_value' => $settings['fancybox_video_view_mode'],
+  $element['fancybox_video_width'] = array(
+    '#title' => t('Width'),
+    '#type' => 'textfield',
+    '#default_value' => $settings['fancybox_video_width'],
+    '#description' => t('The width of the video in fancyBox.'),
+  );
+
+  $element['fancybox_video_height'] = array(
+    '#title' => t('Height'),
+    '#type' => 'textfield',
+    '#default_value' => $settings['fancybox_video_height'],
+    '#description' => t('The height of the video in fancyBox.'),
   );
 
   return $element;
