@@ -6,11 +6,63 @@
  */
 
 /**
- * Implements hook_field_formatter_info_alter().
+ * Implements hook_theme().
  */
-function fancybox_video_field_formatter_info_alter(&$info) {
-  // Add file support for fancybox.
-  $info['fancybox']['field types'][] = 'file';
+function fancybox_video_theme() {
+  return array(
+    'fancybox_video_formatter' => array(
+      'variables' => array(
+        'item' => NULL,
+        'entity' => NULL,
+        'entity_type' => NULL,
+        'field' => array(),
+        'display_settings' => array(),
+      ),
+      'file' => 'fancybox_video.theme.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_libraries_info().
+ */
+function fancybox_video_libraries_info() {
+  $libraries['jquery.oembed'] = array(
+    'name' => 'jquery.oembed',
+    'vendor url' => 'https://github.com/starfishmod/jquery-oembed-all',
+    'download url' => 'https://github.com/starfishmod/jquery-oembed-all',
+    'version arguments' => array(
+      'file' => 'CHANGELOG',
+      'pattern' => '@^==\s(.*)\s==@',
+      'lines' => 3,
+    ),
+    'files' => array(
+      'js' => array(
+        'jquery.oembed.js',
+      ),
+      'css' => array(
+        'jquery.oembed.css',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function fancybox_video_field_formatter_info(&$info) {
+  return array(
+    'fancybox_video' => array(
+      'label' => t('fancyBox video'),
+      'field types' => array('file'),
+      'settings' => array(
+        'fancybox_video_thumbnail_image_style' => 'thumbnail',
+        'fancybox_video_view_mode' => 'default',
+      ),
+    ),
+  );
 }
 
 /**
@@ -21,16 +73,42 @@ function fancybox_video_field_formatter_settings_form($field, $instance, $view_m
   $settings = $display['settings'];
   $element = array();
 
-  if ($display['type'] == 'fancybox') {
-    $element['foo'] = array(
-      '#title' => t('Bar'),
-      '#type' => 'textfield',
-      '#size' => 20,
-      '#default_value' => $settings['foo'],
-      '#required' => TRUE,
+  $image_style_options = image_style_options(FALSE);
+  $file_view_mode_options = file_entity_view_mode_labels();
+
+  $element['fancybox_video_thumbnail_image_style'] = array(
+    '#title'   => t('Thumbnail image style'),
+    '#type'    => 'select',
+    '#options' => $image_style_options,
+    '#default_value' => $settings['fancybox_video_thumbnail_image_style'],
+  );
+
+  $element['fancybox_video_view_mode'] = array(
+    '#title'   => t('View mode'),
+    '#type'    => 'select',
+    '#options' => $file_view_mode_options,
+    '#default_value' => $settings['fancybox_video_view_mode'],
+  );
+
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function fancybox_video_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+
+  foreach ($items as $i => $item) {
+    $element[$i] = array(
+      '#theme' => 'fancybox_video_formatter',
+      '#item' => $item,
+      '#entity' => $entity,
+      '#entity_type' => $entity_type,
+      '#field' => $field,
+      '#display_settings' => $display['settings'],
     );
   }
 
   return $element;
-
 }
